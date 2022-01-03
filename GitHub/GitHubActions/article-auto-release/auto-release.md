@@ -6,7 +6,7 @@
 
 ### 分支管理
 
-![](images/origin-branch.png)
+![](./images/origin-branch.png)
 
 * 主分支：`z.y.x`，发布时，开发分支合入主分支
 * 开发分支：`z.y.x-rc`，`pr` 合入的目标分支
@@ -19,7 +19,7 @@
 
 ### 手动发布如何进行？
 
-![](images/origin-process.png)
+![](./images/origin-process.png)
 
 #### 0-GitHub
 
@@ -54,7 +54,7 @@
 > 
 > 以下介绍引用：[Understanding GitHub Actions](https://docs.github.com/cn/actions/learn-github-actions/understanding-github-actions)
 
-![](images/ga-relations.png)
+![](./images/ga-relations.png)
 
 ### Workflows
 
@@ -136,11 +136,11 @@ jobs:
 
 手动发布：
 
-![](images/origin-process.png)
+![](./images/origin-process.png)
 
 基于事件改造：
 
-![](images/ga-r-process.png)
+![](./images/ga-r-process.png)
 
 #### 基于事件拆分为若干 `workflow`
 
@@ -166,21 +166,21 @@ jobs:
 
 ### 将开发分支通过 `pull request` 的方式合入
 
-![](images/show_pr.png)
+![](./images/show_pr.png)
 
 
 ### 自动触发 Actions
 
-![](images/show_actions.png)
+![](./images/show_actions.png)
 
 
 上述 Actions 执行完后，在 GitHub Releases 可以查看最新的 Release
 
-![](images/show_release.png)
+![](./images/show_release.png)
 
 构建并推送镜像到 Docker Hub
 
-![](images/show_docker.png)
+![](./images/show_docker.png)
 
 Helm Repo 的 包版本也通过相应的 Actions 更新
 
@@ -194,7 +194,7 @@ helm search repo djangocli --versions
 helm upgrade djangocli myrepo/djangocli --version=0.5.8 -f djangocli-private-values.yaml
 ```
 
-![](images/show_helm_repo.png)
+![](./images/show_helm_repo.png)
 
 
 ## workflow 实现
