@@ -9,12 +9,15 @@
   },
   "config": {
     "commitizen": {
-      "path": "node_modules/cz-customizable"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "husky": {
-      "hooks": {
-          "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
-      }
+    "hooks": {
+      "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
+    }
+  },
+  "scripts": {
+    "prepare": "husky install"
   }
 }

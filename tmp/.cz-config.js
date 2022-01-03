@@ -1,5 +1,7 @@
 'use strict';
 
+// 自定义配置
+//
 // Ref: https://github.com/leoforfree/cz-customizable
 module.exports = {
   types: [

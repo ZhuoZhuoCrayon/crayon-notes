@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# HUSKY_GIT_PARAMS 替换为 $1
+# https://stackoverflow.com/questions/57864037/
+commitlint -e "$1"
