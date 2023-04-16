@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+    app.kubernetes.io/name: mysql
+data:
+  primary.cnf: |
+    # Apply this config only on the primary.
+    [mysqld]
+    # 使用二进制日志文件的方式进行主从复制，这是一个标准的设置
+    log-bin
+  replica.cnf: |
+    # Apply this config only on replicas.
+    [mysqld]
+    # 从节点会拒绝除了主节点的数据同步操作之外的所有写操作，即：它对用户是只读的。
+    super-read-only   
