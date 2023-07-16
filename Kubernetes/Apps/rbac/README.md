@@ -4,12 +4,18 @@
 
 ```shell
 kubectl create namespace rbac
-$ kubectl create -f svc-account.yaml -n rbac
-$ kubectl create -f role-binding.yaml -n rbac
-$ kubectl create -f role.yaml -n rbac
+kubectl create -f svc-account.yaml -n rbac
+kubectl create -f role-binding.yaml -n rbac
+kubectl create -f role.yaml -n rbac
 ```
 
 ### More
+
+Get ServiceAccount details
+
+```shell
+kubectl get sa -n rbac -o yaml
+```
 
 ## References
 
