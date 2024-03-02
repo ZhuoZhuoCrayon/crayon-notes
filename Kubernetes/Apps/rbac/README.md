@@ -17,6 +17,16 @@ Get ServiceAccount details
 kubectl get sa -n rbac -o yaml
 ```
 
+
+### Delete
+
+```shell
+kubectl delete -f svc-account.yaml -n rbac
+kubectl delete -f role-binding.yaml -n rbac
+kubectl delete -f role.yaml -n rbac
+kubectl delete namespace rbac
+```
+
 ## References
 
 * [26 | 基于角色的权限控制：RBAC](https://time.geekbang.org/column/article/42154)

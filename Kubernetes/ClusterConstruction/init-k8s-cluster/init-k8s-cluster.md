@@ -118,7 +118,7 @@ dnf install containerd.io-1.2.2-3.3.el7.x86_64.rpm
 
 安装 docker
 > el7 代表什么？
->  **EL** 是Red Hat **E** nterprise **L** inux（**EL**）的缩写，EL7 是 Red Hat 7.x，CentOS 7.x 和CloudLinux 7.x 的下载，需根据实际情况填写。
+>  **EL** 是 Red Hat**E**nterprise**L**inux（**EL**）的缩写，EL7 是 Red Hat 7.x，CentOS 7.x 和CloudLinux 7.x 的下载，需根据实际情况填写。
 
 ```shell
 yum -y install docker-ce-cli-19.03.15-3.el7 docker-ce-19.03.15-3.el7
@@ -488,7 +488,7 @@ yum install -y nfs-utils
 挂载 NFS
 
 ```shell
-mkdir -p /nfs-storage/data  
+mkdir -p /nfs-storage/data
 mount -t nfs 127-0-0-4-nfs-node:/nfs-storage/data /nfs-storage/data
 ```
 
@@ -515,9 +515,43 @@ mount -a
 
 ```shell
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/  
-helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=127-0-0-4-nfs-node --set nfs.path=/nfs-storage/data/ --set storageClass.defaultClass=true
+helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=10-0-4-15-nfs-node --set nfs.path=/nfs-storage/data/ --set storageClass.defaultClass=true
 ```
 
+
+## 更新 Kubernetes 证书
+
+查看证书过期时间
+
+```shell
+kubeadm certs check-expiration
+```
+
+备份旧证书
+
+```shell
+cp -r /etc/kubernetes /etc/kubernetes.old
+```
+
+
+在每个 master 节点上执行
+
+```shell
+kubeadm certs renew all
+```
+
+在每个 master 节点管理重启
+
+```shell
+docker ps |egrep "k8s_kube-apiserver|k8s_kube-scheduler|k8s_kube-controller"|awk '{print $1}'|xargs docker restart
+```
+
+更新 ~/.kube/config 文件
+
+```shell
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
 
 ## 参考资料
 
@@ -525,3 +559,4 @@ helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs
 * [Docker 从入门到实践](https://yeasy.gitbook.io/docker_practice/)
 * [Kubernetes 集群部署 NFS-Subdir-External-Provisioner 存储插件](https://developer.aliyun.com/article/856853)
 * [云原生资料库](https://lib.jimmysong.io/)
+* [Certificate Management with kubeadm](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/)

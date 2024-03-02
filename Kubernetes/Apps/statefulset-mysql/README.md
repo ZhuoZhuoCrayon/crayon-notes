@@ -9,8 +9,17 @@ kubectl apply -f mysql-services.yaml -n statefulset-mysql
 kubectl apply -f mysql-statefulset.yaml -n statefulset-mysql
 ```
 
+## Delete
 
-### More
+```shell
+kubectl delete -f mysql-configmap.yaml -n statefulset-mysql
+kubectl delete -f mysql-services.yaml -n statefulset-mysql
+kubectl delete -f mysql-statefulset.yaml -n statefulset-mysql
+kubectl delete namespace statefulset-mysql
+```
+
+
+## More
 
 Write data to the MySQL by master
 ```shell
