@@ -5,7 +5,7 @@
 > 以下介绍本文搭建所用的配置，关于 kubeadm 搭建的最小配置，可参考：[安装 kubeadm-准备开始](https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#%E5%87%86%E5%A4%87%E5%BC%80%E5%A7%8B)
 >
 
-* 内网互联的四台 2核4G 的 OpenCloudOS 8.6（基于 CentOS 7.x） 主机
+* 内网互联的四台 2核4G 的 OpenCloudOS 8.6（基于 CentOS 8.x） 主机
     * 127.0.0.1 - `127-0-0-1-master`
     * 127.0.0.2 - `127-0-0-2-node`
     * 127.0.0.3 - `127-0-0-3-node`
@@ -309,7 +309,7 @@ kubectl create deployment nginx --image=nginx
 kubectl expose deployment nginx --port 80 --type=NodePort
 ```
 
-#### 3.1.4 [可选] 允许 master / control-plane 调度
+#### 3.1.3 [可选] 允许 master / control-plane 调度
 
 非生产集群为了提升可调度资源，可以去掉污点允许 master / cp 节点被调度
 
@@ -318,7 +318,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
 kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 ```
 
-#### 3.1.3 其他工具
+#### 3.1.4 其他工具
 
 安装 Helm
 
@@ -348,7 +348,7 @@ vim components.yaml
 kubectl apply -f components.yaml
 ```
 
-#### 3.1.4 获取 join 命令
+#### 3.1.5 获取 join 命令
 
 获取加入其他节点的命令
 
