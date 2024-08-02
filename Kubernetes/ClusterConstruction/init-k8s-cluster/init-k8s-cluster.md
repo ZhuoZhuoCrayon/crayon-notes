@@ -2,9 +2,8 @@
 
 ## 1. 准备开始
 
-> 以下介绍本文搭建所用的配置，关于 kubeadm
+> 以下介绍本文搭建所用的配置，关于 kubeadm 搭建的最小配置，可参考：[安装 kubeadm-准备开始](https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#%E5%87%86%E5%A4%87%E5%BC%80%E5%A7%8B)
 >
-搭建的最小配置，可参考：[安装 kubeadm-准备开始](https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#%E5%87%86%E5%A4%87%E5%BC%80%E5%A7%8B)
 
 * 内网互联的四台 2核4G 的 OpenCloudOS 8.6（基于 CentOS 7.x） 主机
     * 127.0.0.1 - `127-0-0-1-master`
@@ -88,10 +87,8 @@ reboot
 
 ### 2.2 初始化 containerd
 
-> ❗️ 自 1.24 版起，Dockershim 已从 Kubernetes
+> ❗️ 自 1.24 版起，Dockershim 已从 Kubernetes 项目中移除，可以使用 [containerd](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd) 作为 CRI 运行时
 >
-项目中移除，可以使用 [containerd](https://kubernetes.io/zh-cn/docs/setup/production-environment/container-runtimes/#containerd)
-> 作为 CRI 运行时
 
 添加官方仓库
 
@@ -135,8 +132,7 @@ install -dv /etc/docker
 
 创建 docker 配置文件
 
-`registry-mirrors` 是镜像源配置，国内从 Docker Hub
-拉取镜像有时会遇到困难，此时可以配置镜像加速器，本文使用腾讯云的镜像加速器，更多配置方法请参考：[镜像加速器](https://yeasy.gitbook.io/docker_practice/install/mirror)
+`registry-mirrors` 是镜像源配置，国内从 Docker Hub 拉取镜像有时会遇到困难，此时可以配置镜像加速器，本文使用腾讯云的镜像加速器，更多配置方法请参考：[镜像加速器](https://yeasy.gitbook.io/docker_practice/install/mirror)
 
 ```shell
 cat << EOF | sudo tee /etc/docker/daemon.json
@@ -414,8 +410,7 @@ Container 中的文件在磁盘上是临时存放的，这给 Container 中运�
 
 ![](images/volume.png)
 
-以下内容将说明如何提供基于 NFS
-的制备器（Provisioner），关于存储制备器的更多内容，请参考：[存储制备器 [](https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/#provisioner)](https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/#provisioner)
+以下内容将说明如何提供基于 NFS 的制备器（Provisioner），关于存储制备器的更多内容，请参考：[存储制备器](https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/#provisioner)
 
 ### 4.2 存储初始化（仅 `127-0-0-4-nfs-node`）
 
@@ -557,8 +552,7 @@ mount -a
 
 ### 4.5 部署 NFS Provisioner（master 节点）
 
-> `NFS-Subdir-External-Provisioner`是一个自动配置卷程序，它使con用现有的和已配置的 NFS 服务器来支持通过持久卷声明动态配置
-> Kubernetes 持久卷。
+> `NFS-Subdir-External-Provisioner`是一个自动配置卷程序，它使用现有的和已配置的 NFS 服务器来支持通过持久卷声明动态配置 Kubernetes 持久卷。
 
 指定 `nfs.server` `nfs.path` 进行创建
 
