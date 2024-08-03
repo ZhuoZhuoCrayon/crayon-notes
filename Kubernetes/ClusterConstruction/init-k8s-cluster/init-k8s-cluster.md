@@ -361,7 +361,7 @@ kubeadm token create --print-join-command
 加入集群
 
 ```shell
-kubeadm join k8scp:6443 --token f8o3vt.fpunhpjkd6qx9m9v --discovery-token-ca-cert-hash xxxxx
+kubeadm join k8scp:6443 --token {fixme: your token} --discovery-token-ca-cert-hash xxxxx
 ```
 
 ### 3.3 删除节点 / 重新初始化
@@ -520,7 +520,8 @@ fuser -m -v /nfs-storage
 netstat | grep :nfs
 ```
 
-### 4.4 搭建 NFS 客户端（其他节点）
+### [可选] 4.4 搭建 NFS 客户端（其他节点）
+> ❗️如果希望在宿主机间共享文件，可以考虑挂载 nfs，不然建议不挂载，毕竟在多写场景文件同步也是挺大的 IO 消耗
 
 安装依赖
 
