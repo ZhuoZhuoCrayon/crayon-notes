@@ -63,7 +63,8 @@ Python 并不像 Go，没有内置的 Benchmark 工具，当然社区有不错�
 ### 2.1. 安装
 
 ```shell
-$ pip install throttled-py 
+# 依赖版本：throttled-py >= 1.0.2
+$ pip install throttled-py==1.0.2
 ```
 
 #### 2.2. 编写一个 Benchmark
@@ -121,7 +122,7 @@ OS: Darwin 23.6.0, Arch: arm64
 ```
 
 <div align="left">
-  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/custom-benchmark/images/2.2.png">
+  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/custom-benchmark/images/2.2.png" width="80%">
 </div>
 
 ### 2.3. pytest 集成

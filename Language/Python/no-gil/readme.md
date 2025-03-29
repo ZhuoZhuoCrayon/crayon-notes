@@ -122,7 +122,8 @@ $ redis-benchmark -t set -n 10000
 1）安装 [throttled-py](https://github.com/ZhuoZhuoCrayon/throttled-py)，该库提供 Redis 及 Benchmark 依赖：
 
 ```shell
-$ pip install throttled-py
+# 依赖版本：throttled-py >= 1.0.2
+$ pip install throttled-py==1.0.2
 ```
 
 2）编写一个压测程序：
