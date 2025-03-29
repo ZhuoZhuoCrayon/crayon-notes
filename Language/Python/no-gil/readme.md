@@ -70,10 +70,10 @@ sequenceDiagram
   >  长期来看，我们希望 no-GIL 成为默认方式，并删除 GIL 的所有痕迹。
 
 <div align="left">
-  <img src="./images/1-3-x.jpg" width="30%">
+  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/no-gil/images/1-3-x.jpg" width="30%">
 </div>
 
-🎉 好消息是，`3.13t-dev`  作为 no-GIL 实验版本已具备较强的可测试性，下文将其性能进行测试和对比。
+🎉 好消息是，`3.13t-dev`  作为 no-GIL 实验版本已具备较强的可测试性，下文将对其性能进行对比。
 
 
 ## 2. 安装实验版本
@@ -125,7 +125,7 @@ $ redis-benchmark -t set -n 10000
 $ pip install throttled-py
 ```
 
-2）编写一个压测脚本：
+2）编写一个压测程序：
 
 * 场景（Redis）：`SET key value`。
 * 串行：顺序执行 100,000 次。
@@ -169,14 +169,14 @@ if __name__ == "__main__":
 在不同 Python 版本间，运行 3.2 的 Benchmark 程序，记录 QPS。
 
 <div align="left">
-  <img src="./images/3-2-1-x.png" width="65%">
+  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/no-gil/images/3-2-1-x.png" width="65%">
 </div>
 
-| Python 版本      | 串行 x 100,000      | 线程池（16 workers）x 100,000 |
-| ---------------- | ------------------- | ----------------------------- |
-| [Redis SET 基准] | 53,561 requests/sec | 53,561 requests/sec           |
-| Python 3.8.12    | 18,640 requests/sec | 13,069 requests/sec           |
-| Python 3.13t-dev | 17,609 requests/sec | 🚀 39,494 requests /sec        |
+| Python 版本        | 串行 x 100,000        | 线程池（16 workers）x 100,000 |
+|------------------|---------------------|--------------------------|
+| [Redis SET 基准]   | 53,561 requests/sec | 53,561 requests/sec      |
+| Python 3.8.12    | 18,640 requests/sec | 13,069 requests/sec      |
+| Python 3.13t-dev | 17,609 requests/sec | 🚀 39,494 requests /sec  |
 
 对比得出：
 
@@ -188,12 +188,16 @@ if __name__ == "__main__":
 1）Python 3.8.12：🐌 只能跑满一个核心（假多线程实锤）。
 
 <div align="left">
-  <img src="./images/3-3-2-1x.png" width="60%">
+  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/no-gil/images/3-3-2-1x.png" width="60%">
 </div>
 
 2）Python 3.13t-dev：🔥跑满 6 个核。
 
 <div align="left">
-  <img src="./images/3-3-2-2x.png" width="60%">
+  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/no-gil/images/3-3-2-2x.png" width="60%">
 </div>
 
+
+## 4. 结语
+* GIL 的存在使得过往部分线程不安全的代码得以正常运行，这可能会是未来升级 no-GIL 的隐患。
+* no-GIL 性能的提升，为 Python 在机器学习、大数据处理等场景下，提供了更多可能性。
