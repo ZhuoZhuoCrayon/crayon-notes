@@ -2,7 +2,7 @@
 > 源码：[throttled-py/throttled/utils.py Benchmark](https://github.com/ZhuoZhuoCrayon/throttled-py/blob/main/throttled/utils.py)，期待 Star 🌟。
 
 <div align="left">
-  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/custom-benchmark/images/overview.png" width="50%">
+  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/custom-benchmark/images/2.2.png" width="90%">
 </div>
 
 ## 1. 程序离不开 Benchmark
@@ -120,10 +120,6 @@ OS: Darwin 23.6.0, Arch: arm64
 ✅ Total: 100000, 🕒 Latency: 1.9953 ms/op, 💤 Throughput: 15966 req/s (⬇️-5.17%)
 ✅ Total: 100000, 🕒 Latency: 1.0244 ms/op, 🚀 Throughput: 25227 req/s (⬆️58.00%)
 ```
-
-<div align="left">
-  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/custom-benchmark/images/2.2.png" width="80%">
-</div>
 
 ### 2.3. pytest 集成
 
