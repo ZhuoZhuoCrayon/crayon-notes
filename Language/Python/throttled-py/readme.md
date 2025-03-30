@@ -5,6 +5,7 @@
 > 
 > 简介：🔧 支持多种算法（固定窗口，滑动窗口，令牌桶，漏桶 & GCRA）及存储（Redis、内存）的高性能 Python 限流库。
 
+
 ## 🚀 功能
 
 * 提供线程安全的存储后端：Redis（基于 Lua 实现限流算法）、内存（基于 threading.RLock，支持 Key 过期淘汰）。
@@ -56,4 +57,25 @@ if __name__ == "__main__":
     benchmark: utils.Benchmark = utils.Benchmark()
     denied_num: int = sum(benchmark.concurrent(call_api, 100_000, workers=32))
     print(f"❌ Denied: {denied_num} requests")
+```
+
+### 3）作为装饰器
+
+```python
+from throttled import Throttled, rate_limter, exceptions
+
+# 创建一个每分钟允许通过 1 次的限流器。
+@Throttled(key="/ping", quota=rate_limter.per_min(1))
+def ping() -> str:
+    return "ping"
+
+ping()
+
+try:
+    ping()
+except exceptions.LimitedError as exc:
+    # raise Rate limit exceeded: remaining=0, reset_after=60
+    print(exc)
+    # 在异常中获取限流结果：RateLimitResult(limited=True, state=RateLimitState(limit=1, remaining=0, reset_after=60))
+    print(exc.rate_limit_result)
 ```
