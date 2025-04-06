@@ -199,6 +199,68 @@ if __name__ == "__main__":
 </div>
 
 
+## 4. 引入更多 Benchmarks
+
+### 4.1. Pyperformance / 单线程
+
+#### 4.1.1. 什么是 Pyperformance？
+
+[Pyperformance](https://github.com/python/pyperformance) 是 Python 的官方基准测试套件，用于测量和比较不同版本 Python 解释器的**单线程**运行性能。
+
+#### 4.1.2. 运行 Benchmarks
+
+1）运行 Benchmarks
+
+```shell
+# no-GIL
+$ pyperformance run -b nbody,regex_v8,crypto_pyaes,json_dumps,logging -o no_gil_results.json --python=python3.13t-dev 
+# with-GIL
+$ pyperformance run -b nbody,regex_v8,crypto_pyaes,json_dumps,logging -o with_gil_results.json --python=python3.13.1
+# Compare
+$ pyperformance compare with_gil_results.json no_gil_results.json
+```
+
+2）性能对比
+
+| 基准测试 *[1]*         | Python 3.13.1（with-GIL）*[2]* | 💤 Python 3.13t-dev（no-GIL）*[3]* | 对比 *[4]*     |
+|--------------------|------------------------------|----------------------------------|--------------|
+| **crypto_pyaes**   | 58.8 ms                      | 85.1 ms                          | 1.45x slower |
+| **json_dumps**     | 7.96 ms                      | 10.05 ms                         | 1.26x slower |
+| **logging_format** | 4.25 μs                      | 8.86 μs                          | 2.08x slower |
+| **logging_silent** | 75.6 ns                      | 156.0 ns                         | 2.06x slower |
+| **logging_simple** | 3.85 μs                      | 8.00 μs                          | 2.08x slower |
+| **nbody**          | 70.8 ms                      | 192.5 ms                         | 2.72x slower |
+| **regex_v8**       | 19.4 ms                      | 20.3 ms                          | 1.05x slower |
+
+* *[1] 在 Pyperformance 中选取计算密集型的 benchmarks，用于反映单线程执行性能。*
+* *[2] Python version: 3.13.1 (64-bit), Report on macOS-14.7.1-arm64-arm-64bit-Mach-O, Number of logical CPUs: 10。*
+* *[3] Python version: 3.13.2+ (64-bit) revision 646b453, Report on macOS-14.7.1-arm64-arm-64bit-Mach-O, Number of logical CPUs: 10。*
+* *[4] no-GIL 实验版本在单线程场景下性能显著下降，可能为保证线程安全，引入额外开销。*
+
+### 4.2. 多线程场景
+
+<div align="left">
+  <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/no-gil/images/4.2.png" width="60%">
+</div>
+
+| 基准测试 *[1]*          | Python 3.13.1（with-GIL） | Python 3.13t-dev（no-GIL） | 对比 *[2]*           |
+|---------------------|-------------------------|--------------------------|--------------------|
+| **is_prime**        | 2,493 requests/sec      | 9,768 requests/sec       | 3.92x faster *[2]* |
+| **fibonacci**       | 462 requests/sec        | 215 requests/sec         | 2.15x slower *[2]* |
+| **matrix_multiply** | 108 requests/sec        | 103 requests/sec         | 1.05x slower *[3]* |
+| **redis_set**       | 15,923 requests/sec     | 38,020 requests/sec      | 2.39x faster *[4]* |
+
+* *[1] is_prime、fibonacci、matrix_multiply 为计算密集型任务，redis_set 为 IO 密集型任务。*
+  * *is_prime：求解  `2 ^ 29 - 3`  是否为素数。*
+  * *fibonacci：生成长度为 n 的斐波那契数列。*
+  * *matrix_multiply：n 阶矩阵乘法（numpy）。*
+  * *redis_set：执行 `SET KEY VALUE`。*
+* *[2] no-GIL 在多线程处理计算密集型任务（is_prime）上具有较好的性能表现，涉及申请大量内存（fibonacci）时性能表现不佳。*
+* *[3] numpy 底层为 C 实现，性能持平。*
+* *[4] IO 密集型场景下，性能显著提升。*
+
+
 ## 4. 结语
 * GIL 的存在使得过往部分线程不安全的代码得以正常运行，这可能会是未来升级 no-GIL 的隐患。
-* no-GIL 性能的提升，为 Python 在机器学习、大数据处理等场景下，提供了更多可能性。
+* no-GIL 在 IO 密集型任务上具有较好的性能表现，但计算密集型任务上性能表现不佳，具有较大优化空间。
+
