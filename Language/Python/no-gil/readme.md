@@ -199,7 +199,7 @@ if __name__ == "__main__":
 </div>
 
 
-## 4. 引入更多 Benchmarks
+## 4. 扩展 Benchmarks 分析
 
 ### 4.1. Pyperformance / 单线程
 
@@ -222,15 +222,15 @@ $ pyperformance compare with_gil_results.json no_gil_results.json
 
 2）性能对比
 
-| 基准测试 *[1]*         | Python 3.13.1（with-GIL）*[2]* | 💤 Python 3.13t-dev（no-GIL）*[3]* | 对比 *[4]*     |
-|--------------------|------------------------------|----------------------------------|--------------|
-| **crypto_pyaes**   | 58.8 ms                      | 85.1 ms                          | 1.45x slower |
-| **json_dumps**     | 7.96 ms                      | 10.05 ms                         | 1.26x slower |
-| **logging_format** | 4.25 μs                      | 8.86 μs                          | 2.08x slower |
-| **logging_silent** | 75.6 ns                      | 156.0 ns                         | 2.06x slower |
-| **logging_simple** | 3.85 μs                      | 8.00 μs                          | 2.08x slower |
-| **nbody**          | 70.8 ms                      | 192.5 ms                         | 2.72x slower |
-| **regex_v8**       | 19.4 ms                      | 20.3 ms                          | 1.05x slower |
+| 基准测试 *[1]*         | Python 3.13.1（with-GIL）*[2]* | 🐌 Python 3.13t-dev（no-GIL）*[3]* | 对比 *[4]*   |
+|--------------------|------------------------------|----------------------------------|------------|
+| **crypto_pyaes**   | 58.8 ms                      | 85.1 ms                          | ⬇️ 44.7 %  |
+| **json_dumps**     | 7.96 ms                      | 10.05 ms                         | ⬇️ 26.3 %  |
+| **logging_format** | 4.25 μs                      | 8.86 μs                          | ⬇️ 108.5 % |
+| **logging_silent** | 75.6 ns                      | 156.0 ns                         | ⬇️ 106.3 % |
+| **logging_simple** | 3.85 μs                      | 8.00 μs                          | ⬇️ 108.8 % |
+| **nbody**          | 70.8 ms                      | 192.5 ms                         | ⬇️ 171.9 % |
+| **regex_v8**       | 19.4 ms                      | 20.3 ms                          | ⬇️ 4.6 %   |
 
 * *[1] 在 Pyperformance 中选取计算密集型的 benchmarks，用于反映单线程执行性能。*
 * *[2] Python version: 3.13.1 (64-bit), Report on macOS-14.7.1-arm64-arm-64bit-Mach-O, Number of logical CPUs: 10。*
@@ -239,16 +239,18 @@ $ pyperformance compare with_gil_results.json no_gil_results.json
 
 ### 4.2. 多线程场景
 
+构造计算密集、IO 密集型原子任务，在 8-threads 模式下进行性能分析，详见 [no-gil/benchmarks/main.py](https://github.com/ZhuoZhuoCrayon/crayon-notes/blob/master/Language/Python/no-gil/benchmarks/main.py)。
+
 <div align="left">
   <img src="https://github.com/ZhuoZhuoCrayon/crayon-notes/raw/master/Language/Python/no-gil/images/4.2.png" width="60%">
 </div>
 
-| 基准测试 *[1]*          | Python 3.13.1（with-GIL） | Python 3.13t-dev（no-GIL） | 对比 *[2]*           |
-|---------------------|-------------------------|--------------------------|--------------------|
-| **is_prime**        | 2,493 requests/sec      | 9,768 requests/sec       | 3.92x faster *[2]* |
-| **fibonacci**       | 462 requests/sec        | 215 requests/sec         | 2.15x slower *[2]* |
-| **matrix_multiply** | 108 requests/sec        | 103 requests/sec         | 1.05x slower *[3]* |
-| **redis_set**       | 15,923 requests/sec     | 38,020 requests/sec      | 2.39x faster *[4]* |
+| 基准测试 *[1]*          | Python 3.13.1（with-GIL） | Python 3.13t-dev（no-GIL） | 对比 *[2]*       |
+|---------------------|-------------------------|--------------------------|----------------|
+| **is_prime**        | 2,493 requests/sec      | 9,768 requests/sec       | ⬆️ 292%  *[2]* |
+| **fibonacci**       | 462 requests/sec        | 215 requests/sec         | ⬇️ 53.5% *[2]* |
+| **matrix_multiply** | 108 requests/sec        | 103 requests/sec         | ➖ 持平 *[3]*     |
+| **redis_set**       | 15,923 requests/sec     | 38,020 requests/sec      | ⬆️ 139% *[4]*  |
 
 * *[1] is_prime、fibonacci、matrix_multiply 为计算密集型任务，redis_set 为 IO 密集型任务。*
   * *is_prime：求解  `2 ^ 29 - 3`  是否为素数。*
@@ -260,7 +262,7 @@ $ pyperformance compare with_gil_results.json no_gil_results.json
 * *[4] IO 密集型场景下，性能显著提升。*
 
 
-## 4. 结语
+## 5. 结语
 * GIL 的存在使得过往部分线程不安全的代码得以正常运行，这可能会是未来升级 no-GIL 的隐患。
 * no-GIL 在 IO 密集型任务上具有较好的性能表现，但计算密集型任务上性能表现不佳，具有较大优化空间。
 
