@@ -582,10 +582,18 @@ cp -r /etc/kubernetes /etc/kubernetes.old
 kubeadm certs renew all
 ```
 
-在每个 master 节点管理重启
+在每个 master 节点管理重启 `kube-apiserver` `kube-controller-manager` `kube-scheduler` 容器。
+
+Kubernetes 的核心组件通常以静态 Pod 的形式运行，配置文件位于 /etc/kubernetes/manifests 目录。
+
+通过修改这些文件（例如添加空格或注释）可以触发 kubelet 自动重启相关组件。
 
 ```shell
-docker ps |egrep "k8s_kube-apiserver|k8s_kube-scheduler|k8s_kube-controller"|awk '{print $1}'|xargs docker restart
+# refer: https://stackoverflow.com/questions/73229958。
+mkdir tmp
+mv /etc/kubernetes/manifests/* tmp/
+# Wait until pods stop running (in my case, single master, kubectl stopped working)
+mv tmp/* /etc/kubernetes/manifests/
 ```
 
 更新 ~/.kube/config 文件
