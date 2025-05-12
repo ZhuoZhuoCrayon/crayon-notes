@@ -1,4 +1,3 @@
-import os
 import gc
 import time
 import math
@@ -7,6 +6,8 @@ from typing import List
 
 import redis
 import numpy as np
+# Package containing module 'throttled' is not listed in the project requirements
+# https://youtrack.jetbrains.com/issue/PY-11963
 from throttled.utils import Benchmark
 
 

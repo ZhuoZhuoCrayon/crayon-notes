@@ -264,5 +264,5 @@ $ pyperformance compare with_gil_results.json no_gil_results.json
 
 ## 5. 结语
 * GIL 的存在使得过往部分线程不安全的代码得以正常运行，这可能会是未来升级 no-GIL 的隐患。
-* no-GIL 在 IO 密集型任务上具有较好的性能表现，但计算密集型任务上性能表现不佳，具有较大优化空间。
-
+* no-GIL 在 IO 密集型任务上具有较好的性能表现，但在需要频繁申请内存的场景下性能表现不佳，具有较大优化空间。
+* no-GIL 带来的性能提升，为 Python 在机器学习、大数据处理等场景下，提供了更多可能性。
